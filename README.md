@@ -9,6 +9,7 @@ IPSEpro:
 
 SDraw installieren:
 - Recherche über Sankey Programme.
+- eSankey! nach Kauf testen
 
 Github:
 -eigene branch im projekt "varesi-sim" erstellen namens "dev" 
