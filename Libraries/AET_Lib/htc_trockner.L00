@@ -1,0 +1,19 @@
+========================================================================
+||
+||     PSEStat - Static Solver
+||     Version 5.1, Build 1134, Nov 26 2012 17:03:48 
+||
+========================================================================
+
+Loading system ...
+
+%Error: Invalid equation in dryer_orggaswater.u_dryer_ogw_001:
+Equation "fdt_gas_feed_org_drain" references undefined object of type "feed_gas"
+
+========================================================================
+Solution
+Start:	Apr 23 2014, 15:05:08,346
+End:	Apr 23 2014, 15:05:08.580
+Time:	0.234000  seconds
+1 errors, 0 warnings
+========================================================================
