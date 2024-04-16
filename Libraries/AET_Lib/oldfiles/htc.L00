@@ -1,0 +1,1260 @@
+========================================================================
+||
+||     PSEStat - Static Solver
+||     Version 5.1, Build 1134, Nov 26 2012 17:03:48 
+||
+========================================================================
+
+Loading system ...
+
+System has been loaded successfully.
+System analysis ...
+========================================================================
+System model contains 108 variables
+14 variables set to fixed values
+System to be solved contains 94 variables and 94 equations
+85 groups found. Largest group contains 10 variables.
+========================================================================
+System analysis finished.
+
+
+Starting system solution .... 
+========================================================================
+--------------------------------------------------
+Solving group 1, a group with 1 elements
+
+Group contains the following variables:
+carbon.SubstNr
+
+Group contains the following equations:
+carbon.fSubstNr1
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 2, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.ash_content
+
+Group contains the following equations:
+c_st_o_004.fash_cont
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 3, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.water_content
+
+Group contains the following equations:
+u_cmp_o_001.f_water
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 4, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.water_content
+
+Group contains the following equations:
+u_cmp_o_001.f_water_content
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 5, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.ash_content
+
+Group contains the following equations:
+c_st_o_002.fash_cont
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 6, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.massflow
+
+Group contains the following equations:
+u_source_o_001.fmassflow
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 7, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.massflow
+
+Group contains the following equations:
+u_cmp_o_001.f_mass
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 8, a group with 1 elements
+
+Group contains the following variables:
+ks.wO
+
+Group contains the following equations:
+ks.fmass_sum
+
+Initializing ...
+Group converged with errf= 2.921e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 9, a group with 10 elements
+
+Group contains the following variables:
+carbon.hhv	carbon.lhv	carbon.wCl	carbon.wS
+carbon.wO	c_st_o_004.massflow	carbon.wH	carbon.wN
+c_st_o_004.water_content	carbon.wC
+
+Group contains the following equations:
+c_st_o_004.fhhv	carbon.fhhv	u_htc_o_001.f1Cl	u_htc_o_001.f1S
+carbon.fmass_sum	u_htc_o_001.f1O	u_htc_o_001.f1H	carbon.flhv_boie
+u_htc_o_001.f1N	u_htc_o_001.f1C
+
+Initializing ...
+errf = 1035.77 (>0.00030429)
+
+1. iteration step
+errx = 1.01398 (>0.00030429)
+errf = 1480.41 (>0.00030429)
+
+2. iteration step
+errx = 0.397234 (>0.00030429)
+errf = 0.072904 (>0.00030429)
+
+3. iteration step
+Group converged with errx= 2.41141e-005 (<=0.00030429)
+--------------------------------------------------
+Solving group 10, a group with 1 elements
+
+Group contains the following variables:
+carbon.hf298
+
+Group contains the following equations:
+carbon.fhf1
+
+Initializing ...
+errf = 3382.57 (>9.6225e-005)
+
+1. iteration step
+errx = 1.27792 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 11, a group with 1 elements
+
+Group contains the following variables:
+carbon.e_chem
+
+Group contains the following equations:
+carbon.fe_chem
+
+Initializing ...
+errf = 7301.23 (>9.6225e-005)
+
+1. iteration step
+errx = 0.296229 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 12, a group with 1 elements
+
+Group contains the following variables:
+ks.SubstNr
+
+Group contains the following equations:
+ks.fSubstNr1
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 13, a group with 1 elements
+
+Group contains the following variables:
+ks.lhv
+
+Group contains the following equations:
+ks.flhv_boie
+
+Initializing ...
+errf = 0.118416 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 8.17681e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 14, a group with 1 elements
+
+Group contains the following variables:
+ks.hhv
+
+Group contains the following equations:
+ks.fhhv
+
+Initializing ...
+errf = 0.377695 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.36838e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 15, a group with 1 elements
+
+Group contains the following variables:
+ks.hf298
+
+Group contains the following equations:
+ks.fhf1
+
+Initializing ...
+errf = 0.0477106 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 7.14514e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 16, a group with 1 elements
+
+Group contains the following variables:
+ks.e_chem
+
+Group contains the following equations:
+ks.fe_chem
+
+Initializing ...
+errf = 0.377695 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.36838e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 17, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.p
+
+Group contains the following equations:
+u_source_o_001.fp
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 18, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.p
+
+Group contains the following equations:
+u_cmp_o_001.f_press
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 19, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.p
+
+Group contains the following equations:
+u_htc_o_001.fdp_fuel
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 20, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.p
+
+Group contains the following equations:
+u_cmp_o_001a.f_press
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 21, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.t
+
+Group contains the following equations:
+u_cmp_o_001a.f_temp
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 22, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.rho
+
+Group contains the following equations:
+u_cmp_o_001a.f_dens
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 23, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.h_waf
+
+Group contains the following equations:
+c_st_o_005.fh
+
+Initializing ...
+errf = 4.05917 (>9.6225e-005)
+
+1. iteration step
+errx = 0.175268 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 24, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.s_waf
+
+Group contains the following equations:
+c_st_o_005.fs
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 25, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.e_waf
+
+Group contains the following equations:
+c_st_o_005.fe
+
+Initializing ...
+errf = 7301.23 (>9.6225e-005)
+
+1. iteration step
+errx = 0.296229 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 26, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.water_content
+
+Group contains the following equations:
+u_cmp_o_001a.f_water_content
+
+Initializing ...
+errf = 0.308595 (>9.6225e-005)
+
+1. iteration step
+errx = 0.755259 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 27, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.ash_content
+
+Group contains the following equations:
+c_st_o_005.fash_cont
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 28, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.h_total
+
+Group contains the following equations:
+c_st_o_005.fh_total1
+
+Initializing ...
+errf = 1034.95 (>9.6225e-005)
+
+1. iteration step
+errx = 0.128594 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 29, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.lhv
+
+Group contains the following equations:
+c_st_o_005.flhv
+
+Initializing ...
+errf = 1035 (>9.6225e-005)
+
+1. iteration step
+errx = 0.0789411 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 30, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.hhv
+
+Group contains the following equations:
+c_st_o_005.fhhv
+
+Initializing ...
+errf = 1034.5 (>9.6225e-005)
+
+1. iteration step
+errx = 0.0709705 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 31, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.massflow
+
+Group contains the following equations:
+u_cmp_o_001a.f_mass
+
+Initializing ...
+errf = 0.00014605 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.92099e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 32, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.volflow
+
+Group contains the following equations:
+c_st_o_005.fvolflow
+
+Initializing ...
+errf = 0.00014605 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.92099e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 33, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.Energy
+
+Group contains the following equations:
+c_st_o_005.fEnergy1
+
+Initializing ...
+errf = 50638.5 (>9.6225e-005)
+
+1. iteration step
+errx = 0.0769136 (>9.6225e-005)
+Group converged with errf= 1.16415e-010 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 34, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_005.Exergy
+
+Group contains the following equations:
+c_st_o_005.fExergy1
+
+Initializing ...
+errf = 51689.2 (>9.6225e-005)
+
+1. iteration step
+errx = 0.0709177 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 35, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.h_waf
+
+Group contains the following equations:
+c_st_o_004.fh
+
+Initializing ...
+errf = 4.05917 (>9.6225e-005)
+
+1. iteration step
+errx = 0.175268 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 36, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.s_waf
+
+Group contains the following equations:
+c_st_o_004.fs
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 37, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.e_waf
+
+Group contains the following equations:
+c_st_o_004.fe
+
+Initializing ...
+errf = 7301.23 (>9.6225e-005)
+
+1. iteration step
+errx = 0.296229 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 38, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.h_total
+
+Group contains the following equations:
+c_st_o_004.fh_total1
+
+Initializing ...
+errf = 1035.45 (>9.6225e-005)
+
+1. iteration step
+errx = 0.128657 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 39, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.lhv
+
+Group contains the following equations:
+c_st_o_004.flhv
+
+Initializing ...
+errf = 1036 (>9.6225e-005)
+
+1. iteration step
+errx = 0.0790173 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 40, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.volflow
+
+Group contains the following equations:
+c_st_o_004.fvolflow
+
+Initializing ...
+errf = 0.00014605 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.92099e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 41, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.Energy
+
+Group contains the following equations:
+c_st_o_004.fEnergy1
+
+Initializing ...
+errf = 50710.5 (>9.6225e-005)
+
+1. iteration step
+errx = 0.0770229 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 42, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_004.Exergy
+
+Group contains the following equations:
+c_st_o_004.fExergy1
+
+Initializing ...
+errf = 51761.2 (>9.6225e-005)
+
+1. iteration step
+errx = 0.0710165 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 43, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.t
+
+Group contains the following equations:
+u_source_o_001.ft
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 44, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.h_waf
+
+Group contains the following equations:
+c_st_o_001.fh
+
+Initializing ...
+errf = 0.000326946 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 1.16782e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 45, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.s_waf
+
+Group contains the following equations:
+c_st_o_001.fs
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 46, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.e_waf
+
+Group contains the following equations:
+c_st_o_001.fe
+
+Initializing ...
+errf = 0.377695 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.36838e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 47, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.ash_content
+
+Group contains the following equations:
+c_st_o_001.fash_cont
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 48, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.h_total
+
+Group contains the following equations:
+c_st_o_001.fh_total1
+
+Initializing ...
+errf = 0.0477106 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 7.14514e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 49, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.lhv
+
+Group contains the following equations:
+c_st_o_001.flhv
+
+Initializing ...
+errf = 0.118416 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 8.17681e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 50, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.hhv
+
+Group contains the following equations:
+c_st_o_001.fhhv
+
+Initializing ...
+errf = 0.377695 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.36838e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 51, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.volflow
+
+Group contains the following equations:
+c_st_o_001.fvolflow
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 52, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.Energy
+
+Group contains the following equations:
+c_st_o_001.fEnergy1
+
+Initializing ...
+errf = 14.1044 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 1.94411e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 53, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_001.Exergy
+
+Group contains the following equations:
+c_st_o_001.fExergy1
+
+Initializing ...
+errf = 4.88475 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 6.12608e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 54, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.t
+
+Group contains the following equations:
+u_cmp_o_001.f_temp
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 55, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.rho
+
+Group contains the following equations:
+u_cmp_o_001.f_dens
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 56, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.h_waf
+
+Group contains the following equations:
+c_st_o_002.fh
+
+Initializing ...
+errf = 0.000326946 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 1.16782e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 57, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.s_waf
+
+Group contains the following equations:
+c_st_o_002.fs
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 58, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.e_waf
+
+Group contains the following equations:
+c_st_o_002.fe
+
+Initializing ...
+errf = 0.377695 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.36838e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 59, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.h_total
+
+Group contains the following equations:
+c_st_o_002.fh_total1
+
+Initializing ...
+errf = 0.0477106 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 7.14514e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 60, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.lhv
+
+Group contains the following equations:
+c_st_o_002.flhv
+
+Initializing ...
+errf = 0.118416 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 8.17681e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 61, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.hhv
+
+Group contains the following equations:
+c_st_o_002.fhhv
+
+Initializing ...
+errf = 0.377695 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.36838e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 62, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.volflow
+
+Group contains the following equations:
+c_st_o_002.fvolflow
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 63, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.Energy
+
+Group contains the following equations:
+c_st_o_002.fEnergy1
+
+Initializing ...
+errf = 14.1044 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 1.94411e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 64, a group with 1 elements
+
+Group contains the following variables:
+c_st_o_002.Exergy
+
+Group contains the following equations:
+c_st_o_002.fExergy1
+
+Initializing ...
+errf = 4.88475 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 6.12608e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 65, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.water_content
+
+Group contains the following equations:
+u_cmp_o_001a.f_water
+
+Initializing ...
+errf = 30.8645 (>9.6225e-005)
+
+1. iteration step
+errx = 0.755381 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 66, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.ash_content_wf
+
+Group contains the following equations:
+u_cmp_o_001a.f_ash
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 67, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.C_wf
+
+Group contains the following equations:
+u_cmp_o_001a.fC_wf
+
+Initializing ...
+errf = 23.1942 (>9.6225e-005)
+
+1. iteration step
+errx = 0.342915 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 68, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.H_wf
+
+Group contains the following equations:
+u_cmp_o_001a.fH_wf
+
+Initializing ...
+errf = 2.59547 (>9.6225e-005)
+
+1. iteration step
+errx = 0.716775 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 69, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.O_wf
+
+Group contains the following equations:
+u_cmp_o_001a.fO_wf
+
+Initializing ...
+errf = 20.5992 (>9.6225e-005)
+
+1. iteration step
+errx = 0.716723 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 70, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.N_wf
+
+Group contains the following equations:
+u_cmp_o_001a.fN_wf
+
+Initializing ...
+Group converged with errf= 2.619e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 71, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.S_wf
+
+Group contains the following equations:
+u_cmp_o_001a.fS_wf
+
+Initializing ...
+Group converged with errf= 2.619e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 72, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.Cl_wf
+
+Group contains the following equations:
+u_cmp_o_001a.fCl_wf
+
+Initializing ...
+Group converged with errf= 2.619e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 73, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.lhv_wf
+
+Group contains the following equations:
+u_cmp_o_001a.flhv_wf
+
+Initializing ...
+errf = 7867.81 (>9.6225e-005)
+
+1. iteration step
+errx = 0.329793 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 74, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001a.hhv_wf
+
+Group contains the following equations:
+u_cmp_o_001a.fhhv_wf
+
+Initializing ...
+errf = 7301.23 (>9.6225e-005)
+
+1. iteration step
+errx = 0.296229 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 75, a group with 1 elements
+
+Group contains the following variables:
+u_htc_o_001.Q_loss
+
+Group contains the following equations:
+u_htc_o_001.fh_total
+
+Initializing ...
+errf = 51774.7 (>9.6225e-005)
+
+1. iteration step
+errx = 0.755383 (>9.6225e-005)
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 76, a group with 1 elements
+
+Group contains the following variables:
+u_source_o_001.volflow
+
+Group contains the following equations:
+u_source_o_001.fvolflow
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 77, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.ash_content_wf
+
+Group contains the following equations:
+u_cmp_o_001.f_ash
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 78, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.C_wf
+
+Group contains the following equations:
+u_cmp_o_001.fC_wf
+
+Initializing ...
+errf = 0.0003347 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 8.36715e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 79, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.H_wf
+
+Group contains the following equations:
+u_cmp_o_001.fH_wf
+
+Initializing ...
+Group converged with errf= 2.68e-005 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 80, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.O_wf
+
+Group contains the following equations:
+u_cmp_o_001.fO_wf
+
+Initializing ...
+Group converged with errf= 7.10543e-015 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 81, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.N_wf
+
+Group contains the following equations:
+u_cmp_o_001.fN_wf
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 82, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.S_wf
+
+Group contains the following equations:
+u_cmp_o_001.fS_wf
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 83, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.Cl_wf
+
+Group contains the following equations:
+u_cmp_o_001.fCl_wf
+
+Initializing ...
+Group converged with errf= 0 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 84, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.lhv_wf
+
+Group contains the following equations:
+u_cmp_o_001.flhv_wf
+
+Initializing ...
+errf = 0.118416 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 8.17681e-006 (<=9.6225e-005)
+--------------------------------------------------
+Solving group 85, a group with 1 elements
+
+Group contains the following variables:
+u_cmp_o_001.hhv_wf
+
+Group contains the following equations:
+u_cmp_o_001.fhhv_wf
+
+Initializing ...
+errf = 0.377695 (>9.6225e-005)
+
+1. iteration step
+Group converged with errx= 2.36838e-005 (<=9.6225e-005)
+
+========================================================================
+System solution finished.
+
+
+========================================================================
+Results:
+
+x[1]     <carbon.SubstNr>                 =          1  converged
+x[2]     <carbon.wC>                      =    0.67638  converged
+x[3]     <carbon.wH>                      =    0.03621  converged
+x[4]     <carbon.wO>                      =    0.28741  converged
+x[5]     <carbon.wN>                      = -1.3119e-043  converged
+x[6]     <carbon.wS>                      = -1.3119e-043  converged
+x[7]     <carbon.wCl>                     = -1.3119e-043  converged
+x[8]     <carbon.lhv>                     =      23857  converged
+x[9]     <carbon.hhv>                     =      24647  converged
+x[10]    <carbon.hf298>                   =    -2646.9  converged
+x[11]    <carbon.e_chem>                  =      24647  converged
+x[12]    <ks.SubstNr>                     =          1  converged
+x[13]    <ks.wC>                          =    0.40002  set
+x[14]    <ks.wH>                          =   0.067136  set
+x[15]    <ks.wO>                          =    0.53285  converged
+x[16]    <ks.wN>                          =          0  set
+x[17]    <ks.wS>                          =          0  set
+x[18]    <ks.wCl>                         =          0  set
+x[19]    <ks.lhv>                         =      14482  converged
+x[20]    <ks.hhv>                         =      15947  converged
+x[21]    <ks.hf298>                       =    -6677.4  converged
+x[22]    <ks.e_chem>                      =      15947  converged
+x[23]    <c_st_o_005.p>                   =        1.5  converged
+x[24]    <c_st_o_005.t>                   =         25  converged
+x[25]    <c_st_o_005.rho>                 =       1000  converged
+x[26]    <c_st_o_005.h_waf>               =      23.16  converged
+x[27]    <c_st_o_005.s_waf>               =        0.7  converged
+x[28]    <c_st_o_005.e_waf>               =      24647  converged
+x[29]    <c_st_o_005.water_content>       =    0.40859  converged
+x[30]    <c_st_o_005.ash_content>         =          0  converged
+x[31]    <c_st_o_005.h_total>             =    -8048.1  converged
+x[32]    <c_st_o_005.lhv>                 =      13111  converged
+x[33]    <c_st_o_005.hhv>                 =      14576  converged
+x[34]    <c_st_o_005.massflow>            =         50  converged
+x[35]    <c_st_o_005.volflow>             =       0.05  converged
+x[36]    <c_st_o_005.Energy>              =     182.88  converged
+x[37]    <c_st_o_005.Exergy>              =     202.46  converged
+x[38]    <c_st_o_004.p>                   =        1.5  converged
+x[39]    <c_st_o_004.t>                   =         25  set
+x[40]    <c_st_o_004.rho>                 =       1000  set
+x[41]    <c_st_o_004.h_waf>               =      23.16  converged
+x[42]    <c_st_o_004.s_waf>               =        0.7  converged
+x[43]    <c_st_o_004.e_waf>               =      24647  converged
+x[44]    <c_st_o_004.water_content>       =    0.40859  converged
+x[45]    <c_st_o_004.ash_content>         =          0  converged
+x[46]    <c_st_o_004.h_total>             =    -8048.1  converged
+x[47]    <c_st_o_004.lhv>                 =      13111  converged
+x[48]    <c_st_o_004.hhv>                 =      14576  set
+x[49]    <c_st_o_004.massflow>            =         50  converged
+x[50]    <c_st_o_004.volflow>             =       0.05  converged
+x[51]    <c_st_o_004.Energy>              =     182.88  converged
+x[52]    <c_st_o_004.Exergy>              =     202.46  converged
+x[53]    <c_st_o_001.p>                   =        1.5  converged
+x[54]    <c_st_o_001.t>                   =         25  converged
+x[55]    <c_st_o_001.rho>                 =       1000  set
+x[56]    <c_st_o_001.h_waf>               =     27.996  converged
+x[57]    <c_st_o_001.s_waf>               =        0.7  converged
+x[58]    <c_st_o_001.e_waf>               =      15947  converged
+x[59]    <c_st_o_001.water_content>       =          0  converged
+x[60]    <c_st_o_001.ash_content>         =          0  converged
+x[61]    <c_st_o_001.h_total>             =    -6677.4  converged
+x[62]    <c_st_o_001.lhv>                 =      14482  converged
+x[63]    <c_st_o_001.hhv>                 =      15947  converged
+x[64]    <c_st_o_001.massflow>            =         50  converged
+x[65]    <c_st_o_001.volflow>             =       0.05  converged
+x[66]    <c_st_o_001.Energy>              =     201.53  converged
+x[67]    <c_st_o_001.Exergy>              =     221.49  converged
+x[68]    <c_st_o_002.p>                   =        1.5  converged
+x[69]    <c_st_o_002.t>                   =         25  converged
+x[70]    <c_st_o_002.rho>                 =       1000  converged
+x[71]    <c_st_o_002.h_waf>               =     27.996  converged
+x[72]    <c_st_o_002.s_waf>               =        0.7  converged
+x[73]    <c_st_o_002.e_waf>               =      15947  converged
+x[74]    <c_st_o_002.water_content>       =          0  converged
+x[75]    <c_st_o_002.ash_content>         =          0  converged
+x[76]    <c_st_o_002.h_total>             =    -6677.4  converged
+x[77]    <c_st_o_002.lhv>                 =      14482  converged
+x[78]    <c_st_o_002.hhv>                 =      15947  converged
+x[79]    <c_st_o_002.massflow>            =         50  converged
+x[80]    <c_st_o_002.volflow>             =       0.05  converged
+x[81]    <c_st_o_002.Energy>              =     201.53  converged
+x[82]    <c_st_o_002.Exergy>              =     221.49  converged
+x[83]    <u_cmp_o_001a.water_content>     =     40.859  converged
+x[84]    <u_cmp_o_001a.ash_content_wf>    =          0  converged
+x[85]    <u_cmp_o_001a.C_wf>              =     67.638  converged
+x[86]    <u_cmp_o_001a.H_wf>              =      3.621  converged
+x[87]    <u_cmp_o_001a.O_wf>              =     28.741  converged
+x[88]    <u_cmp_o_001a.N_wf>              = 2.619e-005  converged
+x[89]    <u_cmp_o_001a.S_wf>              = 2.619e-005  converged
+x[90]    <u_cmp_o_001a.Cl_wf>             = 2.619e-005  converged
+x[91]    <u_cmp_o_001a.lhv_wf>            =      23857  converged
+x[92]    <u_cmp_o_001a.hhv_wf>            =      24647  converged
+x[93]    <u_htc_o_001.dp_fuel>            =          0  set
+x[94]    <u_htc_o_001.Q_loss>             =     19.039  converged
+x[95]    <u_source_o_001.massflow>        =         50  set
+x[96]    <u_source_o_001.volflow>         =       0.05  converged
+x[97]    <u_source_o_001.p>               =        1.5  set
+x[98]    <u_source_o_001.t>               =         25  set
+x[99]    <u_cmp_o_001.water_content>      =          0  set
+x[100]   <u_cmp_o_001.ash_content_wf>     =          0  converged
+x[101]   <u_cmp_o_001.C_wf>               =     40.002  converged
+x[102]   <u_cmp_o_001.H_wf>               =     6.7136  converged
+x[103]   <u_cmp_o_001.O_wf>               =     53.285  converged
+x[104]   <u_cmp_o_001.N_wf>               =          0  converged
+x[105]   <u_cmp_o_001.S_wf>               =          0  converged
+x[106]   <u_cmp_o_001.Cl_wf>              =          0  converged
+x[107]   <u_cmp_o_001.lhv_wf>             =      14482  converged
+x[108]   <u_cmp_o_001.hhv_wf>             =      15947  converged
+
+========================================================================
+Solution
+Start:	May 13 2014, 17:57:34,017
+End:	May 13 2014, 17:57:34.264
+Time:	0.247000  seconds
+0 errors, 0 warnings
+========================================================================

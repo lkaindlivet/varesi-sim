@@ -1,0 +1,521 @@
+# Model u_pyrol_htd_\pyrolyser_heated_std    developed 29.11.04 (T. Proell), latest modification 
+
+
+# The model solves the mass and energy balances separately for pyrolyser and combustor for external heating
+# feed_gas and air_comb are pure gas streams (no dust, char, or tar allowed)
+# drain_gas and feed_comb contain all of dust, char, and tar
+# drain_comb contains just dust but no char or tar
+# feed_org and drain_char contain ash and require herefore different objects
+
+
+# *********************************************************************************************************************************************************************************
+# ************************************************************             E Q U A T I O N      S E C T I O N                *******************************************************
+# *********************************************************************************************************************************************************************************
+
+
+# =================================================================================================================
+# =============================         E X T E R N A L     H E A T I N G     C O M B U S T O R        ===============================
+# =================================================================================================================
+
+
+#  Equations for external heating section (gas combustor with dust) - the only link to the pyrolyser is the transferred heat Q_trans
+
+# Energy balance of the combustion chamber in kJ/h
+
+fh_total_comb:	drain_comb.massflow*drain_comb.h_total + (Q_loss_comb + Q_trans)*3600.0  = air_comb.massflow*air_comb.h_total + fuel_comb.massflow*fuel_comb.h_total;
+
+
+# Thermal power of the combustion reactor
+
+# Case 1: Neither Char nor Tar in fuel
+ifl !ref(fuel_comb.Char) && !ref(fuel_comb.Tar) then
+	fP_th_comb_1:	P_th_comb*3600.0 	= air_comb.nvolflow*air_comb.Gas.LHV*1000.0 
+					+ fuel_comb.nvolflow*fuel_comb.Gas.LHV*1000.0;
+endifl
+
+# Case 2: Char referenced in fuel, no Tar referenced
+ifl ref(fuel_comb.Char) && !ref(fuel_comb.Tar) then
+	fP_th_comb_2:	P_th_comb*3600.0 	= air_comb.nvolflow*air_comb.Gas.LHV*1000.0
+					+ fuel_comb.nvolflow*(fuel_comb.Gas.LHV*1000.0 + (fuel_comb.char_content/1000.0)*fuel_comb.Char.lhv);
+endifl
+
+# Case 3: No Char referenced in fuel, Tar referenced
+ifl !ref(fuel_comb.Char) && ref(fuel_comb.Tar) then
+	fP_th_comb_3:	P_th_comb*3600.0 	= air_comb.nvolflow*air_comb.Gas.LHV*1000.0
+					+ fuel_comb.nvolflow*(fuel_comb.Gas.LHV*1000.0 + (fuel_comb.tar_content/1000.0)*fuel_comb.Tar.lhv);
+endifl
+
+# Case 4: Char and Tar referenced in fuel
+ifl ref(fuel_comb.Char) && ref(fuel_comb.Tar) then
+	fP_th_comb_4:	P_th_comb*3600.0 	= air_comb.nvolflow*air_comb.Gas.LHV*1000.0
+					+ fuel_comb.nvolflow*(fuel_comb.Gas.LHV*1000.0 + (fuel_comb.char_content/1000.0)*fuel_comb.Char.lhv + (fuel_comb.tar_content/1000.0)*fuel_comb.Tar.lhv);
+endifl
+
+
+# Heat loss of the combustion reactor
+
+fQ_loss_comb:	Q_loss_comb = P_th_comb*(q_loss_rel_comb/100.0);
+
+
+# Pressure drops
+
+fdp_air_comb:	air_comb.p = drain_comb.p + dp_air_comb;
+fdp_air_rel_comb:	0.01*dp_air_rel_comb = dp_air_comb/air_comb.p;
+
+fdp_fuel_comb:	fuel_comb.p = drain_comb.p + dp_fuel_comb;
+fdp_fuel_rel_comb:	0.01*dp_fuel_rel_comb = dp_fuel_comb/fuel_comb.p;
+
+# Elementary mass balances:
+
+# Case 1: Neither Char nor Tar in fuel
+ifl !ref(fuel_comb.Char) && !ref(fuel_comb.Tar) then
+
+	fAr_1:	drain_comb.massflow*drain_comb.Gas.wAr = air_comb.massflow*air_comb.Gas.wAr + fuel_comb.massflow*fuel_comb.Gas.wAr;
+
+	fC_1:	drain_comb.massflow*12.011*(2*drain_comb.Gas.wC2H4/28.0536 + 2*drain_comb.Gas.wC2H6/30.0694 + 3*drain_comb.Gas.wC3H8/44.0962 + drain_comb.Gas.wCH4/16.0428 
+					+ drain_comb.Gas.wCO/28.0104 + drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wHCN/27.02568) 
+		= air_comb.massflow*12.011*(2*air_comb.Gas.wC2H4/28.0536 + 2*air_comb.Gas.wC2H6/30.0694 + 3*air_comb.Gas.wC3H8/44.0962 + air_comb.Gas.wCH4/16.0428 
+					+ air_comb.Gas.wCO/28.0104 + air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wHCN/27.02568)
+		+ fuel_comb.massflow*12.011*(2*fuel_comb.Gas.wC2H4/28.0536 + 2*fuel_comb.Gas.wC2H6/30.0694 + 3*fuel_comb.Gas.wC3H8/44.0962 + fuel_comb.Gas.wCH4/16.0428 
+					+ fuel_comb.Gas.wCO/28.0104 + fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wHCN/27.02568);
+	
+	fH_1:	drain_comb.massflow*1.00794*(4*drain_comb.Gas.wC2H4/28.0536 + 6*drain_comb.Gas.wC2H6/30.0694 + 8*drain_comb.Gas.wC3H8/44.0962 + 4*drain_comb.Gas.wCH4/16.0428 + 2*drain_comb.Gas.wH2/2.01588 
+					+ 2*drain_comb.Gas.wH2O/18.01528 + 2*drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wHCl/36.46064 + drain_comb.Gas.wHCN/27.02568 + 3*drain_comb.Gas.wNH3/17.03056)
+		= air_comb.massflow*1.00794*(4*air_comb.Gas.wC2H4/28.0536 + 6*air_comb.Gas.wC2H6/30.0694 + 8*air_comb.Gas.wC3H8/44.0962 + 4*air_comb.Gas.wCH4/16.0428 + 2*air_comb.Gas.wH2/2.01588 
+					+ 2*air_comb.Gas.wH2O/18.01528 + 2*air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wHCl/36.46064 + air_comb.Gas.wHCN/27.02568 + 3*air_comb.Gas.wNH3/17.03056)
+		+ fuel_comb.massflow*1.00794*(4*fuel_comb.Gas.wC2H4/28.0536 + 6*fuel_comb.Gas.wC2H6/30.0694 + 8*fuel_comb.Gas.wC3H8/44.0962 + 4*fuel_comb.Gas.wCH4/16.0428 + 2*fuel_comb.Gas.wH2/2.01588 
+					+ 2*fuel_comb.Gas.wH2O/18.01528 + 2*fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wHCl/36.46064 + fuel_comb.Gas.wHCN/27.02568 + 3*fuel_comb.Gas.wNH3/17.03056);
+		
+	fO_1:	drain_comb.massflow*15.9994*(drain_comb.Gas.wCO/28.0104 + 2*drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wH2O/18.01528 + drain_comb.Gas.wN2O/44.01288 
+					+ drain_comb.Gas.wNO/30.00614 + 2*drain_comb.Gas.wO2/31.9988 + 2*drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*15.9994*(air_comb.Gas.wCO/28.0104 + 2*air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wH2O/18.01528 + air_comb.Gas.wN2O/44.01288 
+					+ air_comb.Gas.wNO/30.00614 + 2*air_comb.Gas.wO2/31.9988 + 2*air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*15.9994*(fuel_comb.Gas.wCO/28.0104 + 2*fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wH2O/18.01528 + fuel_comb.Gas.wN2O/44.01288 
+					+ fuel_comb.Gas.wNO/30.00614 + 2*fuel_comb.Gas.wO2/31.9988 + 2*fuel_comb.Gas.wSO2/64.0648);			
+				
+	fN_1:	drain_comb.massflow*14.00674*(drain_comb.Gas.wHCN/27.02568 + 2*drain_comb.Gas.wN2/28.01348 + 2*drain_comb.Gas.wN2O/44.01288 + drain_comb.Gas.wNH3/17.03056 + drain_comb.Gas.wNO/30.00614)
+		= air_comb.massflow*14.00674*(air_comb.Gas.wHCN/27.02568 + 2*air_comb.Gas.wN2/28.01348 + 2*air_comb.Gas.wN2O/44.01288 + air_comb.Gas.wNH3/17.03056 + air_comb.Gas.wNO/30.00614)
+		+ fuel_comb.massflow*14.00674*(fuel_comb.Gas.wHCN/27.02568 + 2*fuel_comb.Gas.wN2/28.01348 + 2*fuel_comb.Gas.wN2O/44.01288 + fuel_comb.Gas.wNH3/17.03056 + fuel_comb.Gas.wNO/30.00614);			
+		
+	fS_1:	drain_comb.massflow*32.066*(drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*32.066*(air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*32.066*(fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wSO2/64.0648);			
+		
+	fCl_1:	drain_comb.massflow*35.4527*drain_comb.Gas.wHCl/36.46064
+		= air_comb.massflow*35.4527*air_comb.Gas.wHCl/36.46064
+		+ fuel_comb.massflow*35.4527*fuel_comb.Gas.wHCl/36.46064;
+endifl
+		
+
+
+# Case 2: Char referenced in fuel, no Tar referenced
+ifl ref(fuel_comb.Char) && !ref(fuel_comb.Tar) then
+
+	fAr_2:	drain_comb.massflow*drain_comb.Gas.wAr = air_comb.massflow*air_comb.Gas.wAr + fuel_comb.massflow*fuel_comb.Gas.wAr;
+
+	fC_2:	drain_comb.massflow*12.011*(2*drain_comb.Gas.wC2H4/28.0536 + 2*drain_comb.Gas.wC2H6/30.0694 + 3*drain_comb.Gas.wC3H8/44.0962 + drain_comb.Gas.wCH4/16.0428 
+					+ drain_comb.Gas.wCO/28.0104 + drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wHCN/27.02568) 
+		= air_comb.massflow*12.011*(2*air_comb.Gas.wC2H4/28.0536 + 2*air_comb.Gas.wC2H6/30.0694 + 3*air_comb.Gas.wC3H8/44.0962 + air_comb.Gas.wCH4/16.0428 
+					+ air_comb.Gas.wCO/28.0104 + air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wHCN/27.02568)
+		+ fuel_comb.massflow*12.011*(2*fuel_comb.Gas.wC2H4/28.0536 + 2*fuel_comb.Gas.wC2H6/30.0694 + 3*fuel_comb.Gas.wC3H8/44.0962 + fuel_comb.Gas.wCH4/16.0428 
+					+ fuel_comb.Gas.wCO/28.0104 + fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wHCN/27.02568)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wC);
+	
+	fH_2:	drain_comb.massflow*1.00794*(4*drain_comb.Gas.wC2H4/28.0536 + 6*drain_comb.Gas.wC2H6/30.0694 + 8*drain_comb.Gas.wC3H8/44.0962 + 4*drain_comb.Gas.wCH4/16.0428 + 2*drain_comb.Gas.wH2/2.01588 
+					+ 2*drain_comb.Gas.wH2O/18.01528 + 2*drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wHCl/36.46064 + drain_comb.Gas.wHCN/27.02568 + 3*drain_comb.Gas.wNH3/17.03056)
+		= air_comb.massflow*1.00794*(4*air_comb.Gas.wC2H4/28.0536 + 6*air_comb.Gas.wC2H6/30.0694 + 8*air_comb.Gas.wC3H8/44.0962 + 4*air_comb.Gas.wCH4/16.0428 + 2*air_comb.Gas.wH2/2.01588 
+					+ 2*air_comb.Gas.wH2O/18.01528 + 2*air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wHCl/36.46064 + air_comb.Gas.wHCN/27.02568 + 3*air_comb.Gas.wNH3/17.03056)
+		+ fuel_comb.massflow*1.00794*(4*fuel_comb.Gas.wC2H4/28.0536 + 6*fuel_comb.Gas.wC2H6/30.0694 + 8*fuel_comb.Gas.wC3H8/44.0962 + 4*fuel_comb.Gas.wCH4/16.0428 + 2*fuel_comb.Gas.wH2/2.01588 
+					+ 2*fuel_comb.Gas.wH2O/18.01528 + 2*fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wHCl/36.46064 + fuel_comb.Gas.wHCN/27.02568 + 3*fuel_comb.Gas.wNH3/17.03056)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wH);
+		
+	fO_2:	drain_comb.massflow*15.9994*(drain_comb.Gas.wCO/28.0104 + 2*drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wH2O/18.01528 + drain_comb.Gas.wN2O/44.01288 
+					+ drain_comb.Gas.wNO/30.00614 + 2*drain_comb.Gas.wO2/31.9988 + 2*drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*15.9994*(air_comb.Gas.wCO/28.0104 + 2*air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wH2O/18.01528 + air_comb.Gas.wN2O/44.01288 
+					+ air_comb.Gas.wNO/30.00614 + 2*air_comb.Gas.wO2/31.9988 + 2*air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*15.9994*(fuel_comb.Gas.wCO/28.0104 + 2*fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wH2O/18.01528 + fuel_comb.Gas.wN2O/44.01288 
+					+ fuel_comb.Gas.wNO/30.00614 + 2*fuel_comb.Gas.wO2/31.9988 + 2*fuel_comb.Gas.wSO2/64.0648)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wO);			
+				
+	fN_2:	drain_comb.massflow*14.00674*(drain_comb.Gas.wHCN/27.02568 + 2*drain_comb.Gas.wN2/28.01348 + 2*drain_comb.Gas.wN2O/44.01288 + drain_comb.Gas.wNH3/17.03056 + drain_comb.Gas.wNO/30.00614)
+		= air_comb.massflow*14.00674*(air_comb.Gas.wHCN/27.02568 + 2*air_comb.Gas.wN2/28.01348 + 2*air_comb.Gas.wN2O/44.01288 + air_comb.Gas.wNH3/17.03056 + air_comb.Gas.wNO/30.00614)
+		+ fuel_comb.massflow*14.00674*(fuel_comb.Gas.wHCN/27.02568 + 2*fuel_comb.Gas.wN2/28.01348 + 2*fuel_comb.Gas.wN2O/44.01288 + fuel_comb.Gas.wNH3/17.03056 + fuel_comb.Gas.wNO/30.00614)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wN);			
+		
+	fS_2:	drain_comb.massflow*32.066*(drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*32.066*(air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*32.066*(fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wSO2/64.0648)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wS);			
+		
+	fCl_2:	drain_comb.massflow*35.4527*drain_comb.Gas.wHCl/36.46064
+		= air_comb.massflow*35.4527*air_comb.Gas.wHCl/36.46064
+		+ fuel_comb.massflow*35.4527*fuel_comb.Gas.wHCl/36.46064
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wCl);
+endifl
+		
+
+# Case 3: No Char referenced in fuel, tar referenced
+ifl !ref(fuel_comb.Char) && ref(fuel_comb.Tar) then
+
+	fAr_3:	drain_comb.massflow*drain_comb.Gas.wAr = air_comb.massflow*air_comb.Gas.wAr + fuel_comb.massflow*fuel_comb.Gas.wAr;
+
+	fC_3:	drain_comb.massflow*12.011*(2*drain_comb.Gas.wC2H4/28.0536 + 2*drain_comb.Gas.wC2H6/30.0694 + 3*drain_comb.Gas.wC3H8/44.0962 + drain_comb.Gas.wCH4/16.0428 
+					+ drain_comb.Gas.wCO/28.0104 + drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wHCN/27.02568) 
+		= air_comb.massflow*12.011*(2*air_comb.Gas.wC2H4/28.0536 + 2*air_comb.Gas.wC2H6/30.0694 + 3*air_comb.Gas.wC3H8/44.0962 + air_comb.Gas.wCH4/16.0428 
+					+ air_comb.Gas.wCO/28.0104 + air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wHCN/27.02568)
+		+ fuel_comb.massflow*12.011*(2*fuel_comb.Gas.wC2H4/28.0536 + 2*fuel_comb.Gas.wC2H6/30.0694 + 3*fuel_comb.Gas.wC3H8/44.0962 + fuel_comb.Gas.wCH4/16.0428 
+					+ fuel_comb.Gas.wCO/28.0104 + fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wHCN/27.02568)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.tar_content*fuel_comb.Tar.wC);
+	
+	fH_3:	drain_comb.massflow*1.00794*(4*drain_comb.Gas.wC2H4/28.0536 + 6*drain_comb.Gas.wC2H6/30.0694 + 8*drain_comb.Gas.wC3H8/44.0962 + 4*drain_comb.Gas.wCH4/16.0428 + 2*drain_comb.Gas.wH2/2.01588 
+					+ 2*drain_comb.Gas.wH2O/18.01528 + 2*drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wHCl/36.46064 + drain_comb.Gas.wHCN/27.02568 + 3*drain_comb.Gas.wNH3/17.03056)
+		= air_comb.massflow*1.00794*(4*air_comb.Gas.wC2H4/28.0536 + 6*air_comb.Gas.wC2H6/30.0694 + 8*air_comb.Gas.wC3H8/44.0962 + 4*air_comb.Gas.wCH4/16.0428 + 2*air_comb.Gas.wH2/2.01588 
+					+ 2*air_comb.Gas.wH2O/18.01528 + 2*air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wHCl/36.46064 + air_comb.Gas.wHCN/27.02568 + 3*air_comb.Gas.wNH3/17.03056)
+		+ fuel_comb.massflow*1.00794*(4*fuel_comb.Gas.wC2H4/28.0536 + 6*fuel_comb.Gas.wC2H6/30.0694 + 8*fuel_comb.Gas.wC3H8/44.0962 + 4*fuel_comb.Gas.wCH4/16.0428 + 2*fuel_comb.Gas.wH2/2.01588 
+					+ 2*fuel_comb.Gas.wH2O/18.01528 + 2*fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wHCl/36.46064 + fuel_comb.Gas.wHCN/27.02568 + 3*fuel_comb.Gas.wNH3/17.03056)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.tar_content*fuel_comb.Tar.wH);
+		
+	fO_3:	drain_comb.massflow*15.9994*(drain_comb.Gas.wCO/28.0104 + 2*drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wH2O/18.01528 + drain_comb.Gas.wN2O/44.01288 
+					+ drain_comb.Gas.wNO/30.00614 + 2*drain_comb.Gas.wO2/31.9988 + 2*drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*15.9994*(air_comb.Gas.wCO/28.0104 + 2*air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wH2O/18.01528 + air_comb.Gas.wN2O/44.01288 
+					+ air_comb.Gas.wNO/30.00614 + 2*air_comb.Gas.wO2/31.9988 + 2*air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*15.9994*(fuel_comb.Gas.wCO/28.0104 + 2*fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wH2O/18.01528 + fuel_comb.Gas.wN2O/44.01288 
+					+ fuel_comb.Gas.wNO/30.00614 + 2*fuel_comb.Gas.wO2/31.9988 + 2*fuel_comb.Gas.wSO2/64.0648)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.tar_content*fuel_comb.Tar.wO);			
+				
+	fN_3:	drain_comb.massflow*14.00674*(drain_comb.Gas.wHCN/27.02568 + 2*drain_comb.Gas.wN2/28.01348 + 2*drain_comb.Gas.wN2O/44.01288 + drain_comb.Gas.wNH3/17.03056 + drain_comb.Gas.wNO/30.00614)
+		= air_comb.massflow*14.00674*(air_comb.Gas.wHCN/27.02568 + 2*air_comb.Gas.wN2/28.01348 + 2*air_comb.Gas.wN2O/44.01288 + air_comb.Gas.wNH3/17.03056 + air_comb.Gas.wNO/30.00614)
+		+ fuel_comb.massflow*14.00674*(fuel_comb.Gas.wHCN/27.02568 + 2*fuel_comb.Gas.wN2/28.01348 + 2*fuel_comb.Gas.wN2O/44.01288 + fuel_comb.Gas.wNH3/17.03056 + fuel_comb.Gas.wNO/30.00614)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.tar_content*fuel_comb.Tar.wN);			
+		
+	fS_3:	drain_comb.massflow*32.066*(drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*32.066*(air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*32.066*(fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wSO2/64.0648)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.tar_content*fuel_comb.Tar.wS);			
+		
+	fCl_3:	drain_comb.massflow*35.4527*drain_comb.Gas.wHCl/36.46064
+		= air_comb.massflow*35.4527*air_comb.Gas.wHCl/36.46064
+		+ fuel_comb.massflow*35.4527*fuel_comb.Gas.wHCl/36.46064
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.tar_content*fuel_comb.Tar.wCl);
+endifl
+		
+
+# Case 4: Char and Tar referenced in fuel
+
+ifl ref(fuel_comb.Char) && ref(fuel_comb.Tar) then
+
+	fAr_4:	drain_comb.massflow*drain_comb.Gas.wAr = air_comb.massflow*air_comb.Gas.wAr + fuel_comb.massflow*fuel_comb.Gas.wAr;
+
+	fC_4:	drain_comb.massflow*12.011*(2*drain_comb.Gas.wC2H4/28.0536 + 2*drain_comb.Gas.wC2H6/30.0694 + 3*drain_comb.Gas.wC3H8/44.0962 + drain_comb.Gas.wCH4/16.0428 
+					+ drain_comb.Gas.wCO/28.0104 + drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wHCN/27.02568) 
+		= air_comb.massflow*12.011*(2*air_comb.Gas.wC2H4/28.0536 + 2*air_comb.Gas.wC2H6/30.0694 + 3*air_comb.Gas.wC3H8/44.0962 + air_comb.Gas.wCH4/16.0428 
+					+ air_comb.Gas.wCO/28.0104 + air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wHCN/27.02568)
+		+ fuel_comb.massflow*12.011*(2*fuel_comb.Gas.wC2H4/28.0536 + 2*fuel_comb.Gas.wC2H6/30.0694 + 3*fuel_comb.Gas.wC3H8/44.0962 + fuel_comb.Gas.wCH4/16.0428 
+					+ fuel_comb.Gas.wCO/28.0104 + fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wHCN/27.02568)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wC + fuel_comb.tar_content*fuel_comb.Tar.wC);
+	
+	fH_4:	drain_comb.massflow*1.00794*(4*drain_comb.Gas.wC2H4/28.0536 + 6*drain_comb.Gas.wC2H6/30.0694 + 8*drain_comb.Gas.wC3H8/44.0962 + 4*drain_comb.Gas.wCH4/16.0428 + 2*drain_comb.Gas.wH2/2.01588 
+					+ 2*drain_comb.Gas.wH2O/18.01528 + 2*drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wHCl/36.46064 + drain_comb.Gas.wHCN/27.02568 + 3*drain_comb.Gas.wNH3/17.03056)
+		= air_comb.massflow*1.00794*(4*air_comb.Gas.wC2H4/28.0536 + 6*air_comb.Gas.wC2H6/30.0694 + 8*air_comb.Gas.wC3H8/44.0962 + 4*air_comb.Gas.wCH4/16.0428 + 2*air_comb.Gas.wH2/2.01588 
+					+ 2*air_comb.Gas.wH2O/18.01528 + 2*air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wHCl/36.46064 + air_comb.Gas.wHCN/27.02568 + 3*air_comb.Gas.wNH3/17.03056)
+		+ fuel_comb.massflow*1.00794*(4*fuel_comb.Gas.wC2H4/28.0536 + 6*fuel_comb.Gas.wC2H6/30.0694 + 8*fuel_comb.Gas.wC3H8/44.0962 + 4*fuel_comb.Gas.wCH4/16.0428 + 2*fuel_comb.Gas.wH2/2.01588 
+					+ 2*fuel_comb.Gas.wH2O/18.01528 + 2*fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wHCl/36.46064 + fuel_comb.Gas.wHCN/27.02568 + 3*fuel_comb.Gas.wNH3/17.03056)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wH + fuel_comb.tar_content*fuel_comb.Tar.wH);
+		
+	fO_4:	drain_comb.massflow*15.9994*(drain_comb.Gas.wCO/28.0104 + 2*drain_comb.Gas.wCO2/44.0098 + drain_comb.Gas.wH2O/18.01528 + drain_comb.Gas.wN2O/44.01288 
+					+ drain_comb.Gas.wNO/30.00614 + 2*drain_comb.Gas.wO2/31.9988 + 2*drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*15.9994*(air_comb.Gas.wCO/28.0104 + 2*air_comb.Gas.wCO2/44.0098 + air_comb.Gas.wH2O/18.01528 + air_comb.Gas.wN2O/44.01288 
+					+ air_comb.Gas.wNO/30.00614 + 2*air_comb.Gas.wO2/31.9988 + 2*air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*15.9994*(fuel_comb.Gas.wCO/28.0104 + 2*fuel_comb.Gas.wCO2/44.0098 + fuel_comb.Gas.wH2O/18.01528 + fuel_comb.Gas.wN2O/44.01288 
+					+ fuel_comb.Gas.wNO/30.00614 + 2*fuel_comb.Gas.wO2/31.9988 + 2*fuel_comb.Gas.wSO2/64.0648)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wO + fuel_comb.tar_content*fuel_comb.Tar.wO);			
+				
+	fN_4:	drain_comb.massflow*14.00674*(drain_comb.Gas.wHCN/27.02568 + 2*drain_comb.Gas.wN2/28.01348 + 2*drain_comb.Gas.wN2O/44.01288 + drain_comb.Gas.wNH3/17.03056 + drain_comb.Gas.wNO/30.00614)
+		= air_comb.massflow*14.00674*(air_comb.Gas.wHCN/27.02568 + 2*air_comb.Gas.wN2/28.01348 + 2*air_comb.Gas.wN2O/44.01288 + air_comb.Gas.wNH3/17.03056 + air_comb.Gas.wNO/30.00614)
+		+ fuel_comb.massflow*14.00674*(fuel_comb.Gas.wHCN/27.02568 + 2*fuel_comb.Gas.wN2/28.01348 + 2*fuel_comb.Gas.wN2O/44.01288 + fuel_comb.Gas.wNH3/17.03056 + fuel_comb.Gas.wNO/30.00614)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wN + fuel_comb.tar_content*fuel_comb.Tar.wN);			
+		
+	fS_4:	drain_comb.massflow*32.066*(drain_comb.Gas.wH2S/34.08188 + drain_comb.Gas.wSO2/64.0648)
+		= air_comb.massflow*32.066*(air_comb.Gas.wH2S/34.08188 + air_comb.Gas.wSO2/64.0648)
+		+ fuel_comb.massflow*32.066*(fuel_comb.Gas.wH2S/34.08188 + fuel_comb.Gas.wSO2/64.0648)
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wS + fuel_comb.tar_content*fuel_comb.Tar.wS);			
+		
+	fCl_4:	drain_comb.massflow*35.4527*drain_comb.Gas.wHCl/36.46064
+		= air_comb.massflow*35.4527*air_comb.Gas.wHCl/36.46064
+		+ fuel_comb.massflow*35.4527*fuel_comb.Gas.wHCl/36.46064
+		+ (fuel_comb.nvolflow/1000.0)*(fuel_comb.char_content*fuel_comb.Char.wCl + fuel_comb.tar_content*fuel_comb.Tar.wCl);
+endifl
+		
+
+# Inorganic solids section (Dust): Normally, the same Dust object is used in feed and drain
+
+# Case 1: Fuel and drain use the same Dust object
+ifl !ref(air_comb.Dust) && ref(fuel_comb.Dust) && ref(drain_comb.Dust) 
+	&& ref(fuel_comb.Dust) == ref(drain_comb.Dust) 
+then
+	fdust_cont:	fuel_comb.nvolflow*fuel_comb.dust_content = drain_comb.nvolflow*drain_comb.dust_content;
+endifl
+
+
+# Case 2: Fuel and drain use different Dust objects
+ifl !ref(air_comb.Dust) && ref(fuel_comb.Dust) && ref(drain_comb.Dust) 
+	&& ref(fuel_comb.Dust) != ref(drain_comb.Dust) 
+then
+	# The drain_comb.dust_content is determined by the complete set of elementary balances together with eq. fmass_sum in Dust of drain
+
+	fAsh_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wAsh = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wAsh;
+	fK2O_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wK2O = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wK2O;	
+	fMgO_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wMgO = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wMgO;	
+	fCaO_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wCaO = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wCaO;	
+	fSiO2_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wSiO2 = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wSiO2;
+	fOlivine_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wOlivine = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wOlivine;
+	fCaCO3_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wCaCO3 = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wCaCO3;
+	fDolomite_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wDolomite = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wDolomite;
+	fCaSO4_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wCaSO4 = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wCaSO4;
+	fCaOH2_comb:	fuel_comb.nvolflow*fuel_comb.dust_content*fuel_comb.Dust.wCaOH2 = drain_comb.nvolflow*drain_comb.dust_content*drain_comb.Dust.wCaOH2;	
+endifl
+
+
+# Chemical reactions: No chemical equilibrium is modeled. Apart from a possible CO slip (ratio of CO/CO2 in flue gas), complete combustion is assumed.
+
+# Air ratio lambda_comb: (available oxygen)/(stoichiometically required oxygen)
+
+flambda_comb:	lambda_comb*drain_comb.massflow*(drain_comb.Gas.wO2 - drain_comb.Gas.wCO*31.9988/56.0208) = (air_comb.massflow*air_comb.Gas.wO2 + fuel_comb.massflow*fuel_comb.Gas.wO2)*(lambda_comb - 1.0);
+
+
+# No gaseous organic carbon in flue gas
+
+frC2H4:	drain_comb.Gas.yC2H4 = 0.0;
+frC2H6:	drain_comb.Gas.yC2H6 = 0.0;
+frC3H8:	drain_comb.Gas.yC3H8 = 0.0;
+frCH4:	drain_comb.Gas.yCH4 = 0.0;
+
+
+# CO related to CO2 according to CO_slip_comb in case of lambda_comb >= 1, otherwise no free oxygen in drain
+
+frCO:	if lambda_comb >= 1.0 	then drain_comb.Gas.yCO = (CO_slip_comb/100.0)*drain_comb.Gas.yCO2;
+			else drain_comb.Gas.yO2 = 0.5*(CO_slip_comb/100.0)*drain_comb.Gas.yCO2;
+
+
+# No hydrogen, hydrogen sulfide, hydrogen cyanide, nitrous oxide, or ammonia in flue gas
+
+frH2:	drain_comb.Gas.yH2 = 0.0;
+frH2S:	drain_comb.Gas.yH2S = 0.0;
+frHCN:	drain_comb.Gas.yHCN = 0.0;
+frN2O:	drain_comb.Gas.yN2O = 0.0;
+frNH3:	drain_comb.Gas.yNH3 = 0.0;
+
+
+# No thermal NO is formed, N2 passes without reaction
+
+frN2:	 drain_comb.nvolflow*drain_comb.Gas.yN2 = air_comb.nvolflow*air_comb.Gas.yN2 + fuel_comb.nvolflow*fuel_comb.Gas.yN2;
+
+
+
+# =================================================================================================================
+# ====================================         P Y R O L Y S I S     R E A C T O R         ========================================
+# =================================================================================================================
+
+#  Equations for pyrolysis reactor section - the only link to the combustor is the transferred heat Q_trans
+
+# Energy balance of the pyrolysis reactor in kJ/h
+
+fh_total:	drain_gas.massflow*drain_gas.h_total + drain_char.massflow*drain_char.h_total = Q_trans*3600.0 + feed_gas.massflow*feed_gas.h_total + feed_org.massflow*feed_org.h_total;
+
+
+# Fuel power of the pyrolysis reactor (the fuel energy is not actually released in the pyrolysis kiln)
+
+fP_th_pyr: P_th_pyr*3600.0 = feed_org.massflow*feed_org.lhv;
+
+
+# Pressure drops
+
+fdp_feed_org:	feed_org.p = drain_gas.p + dp_feed_org;
+fdp_feed_org_rel:	0.01*dp_feed_org_rel = dp_feed_org/feed_org.p;
+
+fdp_feed_gas:	feed_gas.p = drain_gas.p + dp_feed_gas;
+fdp_feed_gas_rel:	0.01*dp_feed_gas_rel = dp_feed_gas/feed_gas.p;
+
+fdp_drain_gas_char: drain_gas.p = drain_char.p + dp_drain_gas_char;
+
+
+# Temperature difference in drain streams gas - char
+
+fdt_drain_gas_char:	drain_gas.t = drain_char.t + dt_drain_gas_char;
+
+
+
+# Elementary mass balances for the pyrolysis reactor
+
+# Elements of the gas composition and the organic composition
+
+fAr:	drain_gas.massflow*drain_gas.Gas.wAr = feed_gas.massflow*feed_gas.Gas.wAr;
+
+fC:	drain_gas.massflow*12.011*(2*drain_gas.Gas.wC2H4/28.0536 + 2*drain_gas.Gas.wC2H6/30.0694 + 3*drain_gas.Gas.wC3H8/44.0962 + drain_gas.Gas.wCH4/16.0428 
+				+ drain_gas.Gas.wCO/28.0104 + drain_gas.Gas.wCO2/44.0098 + drain_gas.Gas.wHCN/27.02568) 
+	+ drain_gas.nvolflow*((drain_gas.char_content/1000.0)*drain_gas.Char.wC + (drain_gas.tar_content/1000.0)*drain_gas.Tar.wC) 
+	+ drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content)*drain_char.Organic.wC 
+	= feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*feed_org.Organic.wC 
+	+ feed_gas.massflow*12.011*(2*feed_gas.Gas.wC2H4/28.0536 + 2*feed_gas.Gas.wC2H6/30.0694 + 3*feed_gas.Gas.wC3H8/44.0962 + feed_gas.Gas.wCH4/16.0428 
+				+ feed_gas.Gas.wCO/28.0104 + feed_gas.Gas.wCO2/44.0098 + feed_gas.Gas.wHCN/27.02568);
+				
+fH:	drain_gas.massflow*1.00794*(4*drain_gas.Gas.wC2H4/28.0536 + 6*drain_gas.Gas.wC2H6/30.0694 + 8*drain_gas.Gas.wC3H8/44.0962 + 4*drain_gas.Gas.wCH4/16.0428 + 2*drain_gas.Gas.wH2/2.01588 
+				+ 2*drain_gas.Gas.wH2O/18.01528 + 2*drain_gas.Gas.wH2S/34.08188 + drain_gas.Gas.wHCl/36.46064 + drain_gas.Gas.wHCN/27.02568 + 3*drain_gas.Gas.wNH3/17.03056)
+	+ drain_gas.nvolflow*((drain_gas.char_content/1000.0)*drain_gas.Char.wH + (drain_gas.tar_content/1000.0)*drain_gas.Tar.wH) 
+	+ drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content)*drain_char.Organic.wH 
+	= feed_org.massflow*((1.0 - feed_org.water_content - feed_org.ash_content)*feed_org.Organic.wH + 1.00794*2*feed_org.water_content/18.01528)
+	+ feed_gas.massflow*1.00794*(4*feed_gas.Gas.wC2H4/28.0536 + 6*feed_gas.Gas.wC2H6/30.0694 + 8*feed_gas.Gas.wC3H8/44.0962 + 4*feed_gas.Gas.wCH4/16.0428 + 2*feed_gas.Gas.wH2/2.01588 
+				+ 2*feed_gas.Gas.wH2O/18.01528 + 2*feed_gas.Gas.wH2S/34.08188 + feed_gas.Gas.wHCl/36.46064 + feed_gas.Gas.wHCN/27.02568 + 3*feed_gas.Gas.wNH3/17.03056);
+				
+fO:	drain_gas.massflow*15.9994*(drain_gas.Gas.wCO/28.0104 + 2*drain_gas.Gas.wCO2/44.0098 + drain_gas.Gas.wH2O/18.01528 + drain_gas.Gas.wN2O/44.01288 
+				+ drain_gas.Gas.wNO/30.00614 + 2*drain_gas.Gas.wO2/31.9988 + 2*drain_gas.Gas.wSO2/64.0648)
+	+ drain_gas.nvolflow*((drain_gas.char_content/1000.0)*drain_gas.Char.wO + (drain_gas.tar_content/1000.0)*drain_gas.Tar.wO) 
+	+ drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content)*drain_char.Organic.wO 
+	= feed_org.massflow*((1.0 - feed_org.water_content - feed_org.ash_content)*feed_org.Organic.wO + 15.9994*feed_org.water_content/18.01528)
+	+ feed_gas.massflow*15.9994*(feed_gas.Gas.wCO/28.0104 + 2*feed_gas.Gas.wCO2/44.0098 + feed_gas.Gas.wH2O/18.01528 + feed_gas.Gas.wN2O/44.01288 
+				+ feed_gas.Gas.wNO/30.00614 + 2*feed_gas.Gas.wO2/31.9988 + 2*feed_gas.Gas.wSO2/64.0648);
+				
+fN:	drain_gas.massflow*14.00674*(drain_gas.Gas.wHCN/27.02568 + 2*drain_gas.Gas.wN2/28.01348 + 2*drain_gas.Gas.wN2O/44.01288 + drain_gas.Gas.wNH3/17.03056 + drain_gas.Gas.wNO/30.00614)
+	+ drain_gas.nvolflow*((drain_gas.char_content/1000.0)*drain_gas.Char.wN + (drain_gas.tar_content/1000.0)*drain_gas.Tar.wN) 
+	+ drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content)*drain_char.Organic.wN 
+	= feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*feed_org.Organic.wN
+	+ feed_gas.massflow*14.00674*(feed_gas.Gas.wHCN/27.02568 + 2*feed_gas.Gas.wN2/28.01348 + 2*feed_gas.Gas.wN2O/44.01288 + feed_gas.Gas.wNH3/17.03056 + feed_gas.Gas.wNO/30.00614);
+	
+fS:	drain_gas.massflow*32.066*(drain_gas.Gas.wH2S/34.08188 + drain_gas.Gas.wSO2/64.0648)
+	+ drain_gas.nvolflow*((drain_gas.char_content/1000.0)*drain_gas.Char.wS + (drain_gas.tar_content/1000.0)*drain_gas.Tar.wS) 
+	+ drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content)*drain_char.Organic.wS 
+	= feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*feed_org.Organic.wS
+	+ feed_gas.massflow*32.066*(feed_gas.Gas.wH2S/34.08188 + feed_gas.Gas.wSO2/64.0648);
+	
+fCl:	drain_gas.massflow*35.4527*drain_gas.Gas.wHCl/36.46064
+	+ drain_gas.nvolflow*((drain_gas.char_content/1000.0)*drain_gas.Char.wCl + (drain_gas.tar_content/1000.0)*drain_gas.Tar.wCl) 
+	+ drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content)*drain_char.Organic.wCl 
+	= feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*feed_org.Organic.wCl
+	+ feed_gas.massflow*35.4527*feed_gas.Gas.wHCl/36.46064;
+
+
+# Inorganic solids are treated as chemically invariant: inorganic species balances
+
+fAsh:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wAsh + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wAsh
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wAsh;
+	
+fK2O:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wK2O + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wK2O
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wK2O;
+	
+fMgO:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wMgO + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wMgO
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wMgO;
+	
+fCaO:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaO + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wCaO
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wCaO;
+	
+fSiO2:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wSiO2 + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wSiO2
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wSiO2;
+	
+fOlivine:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wOlivine + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wOlivine
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wOlivine;
+	
+fCaCO3:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaCO3 + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wCaCO3
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wCaCO3;
+	
+fDolomite:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wDolomite + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wDolomite
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wDolomite;
+	
+fCaSO4:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaSO4 + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wCaSO4
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wCaSO4;
+	
+fCaOH2:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaOH2 + drain_char.massflow*drain_char.ash_content*drain_char.Ash.wCaOH2
+	= feed_org.massflow*feed_org.ash_content*feed_org.Ash.wCaOH2;
+
+
+
+# Splitting conditions for organic substances: The composition of the exiting organic substances as well as the contents of char and tar in the streams are required to be set
+
+ffract_char_bed:	drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content) = feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*fract_char_bed;
+
+ffract_char_pg:	drain_gas.nvolflow*(drain_gas.char_content/1000.0) = feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*fract_char_pg;
+
+ffract_tar_pg:	drain_gas.nvolflow*(drain_gas.tar_content/1000.0) = feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*fract_tar_pg;
+
+fungsfd_C:	drain_char.massflow*(1.0 - drain_char.water_content - drain_char.ash_content)*drain_char.Organic.wC + drain_gas.nvolflow*(drain_gas.char_content/1000.0)*drain_gas.Char.wC 
+		= feed_org.massflow*(1.0 - feed_org.water_content - feed_org.ash_content)*feed_org.Organic.wC*unconv_C/100.0;
+
+
+# Splitting conditions for inorganic substances: The inorganic substances of bed material and fuel ash do not react chemically within the pyrolyser. 
+# Therefore, the contents and compositions of the inorganic solids exiting the pyrolyser with char and as dust in producer gas can be calculated according to the occurring splitting conditions.
+# In the following section, the dust content in the producer gas and the dust composition are expressed as a function of entering streams and splitting conditions.
+# The inorganic species balances above yield the composition and massflow of the bed material drain_gas.
+
+fdust_Ash:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wAsh 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wAsh;
+fdust_K2O:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wK2O 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wK2O;
+fdust_MgO:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wMgO 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wMgO;
+fdust_CaO:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaO 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wCaO;
+fdust_SiO2:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wSiO2 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wSiO2;
+fdust_Olivine:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wOlivine	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wOlivine;
+fdust_CaCO3:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaCO3 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wCaCO3;
+fdust_Dolomite:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wDolomite 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wDolomite;
+fdust_CaSO4:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaSO4	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wCaSO4;
+fdust_CaOH2:	drain_gas.nvolflow*(drain_gas.dust_content/1000.0)*drain_gas.Dust.wCaOH2 	= feed_org.massflow*feed_org.ash_content*fract_fly_ash*feed_org.Ash.wCaOH2;
+
+
+
+
+# =================================================================================================================
+# ====================================         G L O B A L    Q U A N T I T I E S           ========================================
+# =================================================================================================================
+
+
+
+# Exergy loss due to irreversible combustion
+
+fE_loss:	drain_comb.Exergy + drain_gas.Exergy + drain_char.Exergy + E_loss = air_comb.Exergy + fuel_comb.Exergy + feed_org.Exergy + feed_gas.Exergy;
+
+
+
+
+# *********************************************************************************************************************************************************************************
+# ************************************************************               T E S T I N G      S E C T I O N                  *******************************************************
+# *********************************************************************************************************************************************************************************
+
+
+# =================================================================================================================
+# =============================         E X T E R N A L     H E A T I N G     C O M B U S T O R        ===============================
+# =================================================================================================================
+
+
+# Test for positive pressure drops
+
+t_dp_air_comb:	test(dp_air_comb > -0.00001)	error "Negative pressure drop from combustion air to flue gas drain_comb.";
+t_dp_fuel_comb:	test(dp_fuel_comb > -0.00001) error "Negative pressure drop from fuel gas to flue gas drain_comb.";
+
+
+# Test for positive heat loss
+
+tQ_loss_comb:	test(q_loss_rel_comb > -0.01) warning "Negative heat loss in gas combustion chamber.";
+
+
+# Test if Dust is properly referenced 
+ 
+ifl ref(air_comb.Dust) then tDust_air:	test (0.0>1.0) error "Gas combustion chamber: No Dust allowed in combustion air_comb.";	endifl
+ifl !ref(fuel_comb.Dust) && ref(drain_comb.Dust) then tDust1:	test (0.0>1.0) error "Gas combustion chamber: If dust is referenced in drain, it must also be referenced in fuel_comb.";	endifl
+ifl ref(fuel_comb.Dust) && !ref(drain_comb.Dust) then tDust2:	test (0.0>1.0) error "Gas combustion chamber: If dust is referenced in fuel, it must also be referenced in drain_comb.";	endifl
+ifl ref(fuel_comb.Dust) != ref(drain_comb.Dust) then tDust3:	test (0.0>1.0) warning "Gas conmustion chamber: The same solid object may be used for dust in fuel and drain_comb.";	endifl
+
+
+# Test if Char is properly referenced 
+
+ifl ref(air_comb.Char) then tChar_air:	test (0.0>1.0) error "Gas combustion chamber: No Char allowed in combustion air_comb.";	endifl
+ifl ref(drain_comb.Char) then tChar_drain:	test (0.0>1.0) error "Gas combustion chamber: No Char allowed in drain_comb.";	endifl
+
+
+# Test if Tar is referenced in fuel gas and if it is not referenced in air and flue gas
+
+ifl ref(air_comb.Tar) then tTar_air:	test (0.0>1.0) error "Gas combustion chamber: No Tar allowed in combustion air_comb.";	endifl
+ifl ref(drain_comb.Tar) then tTar_drain:	test (0.0>1.0) error "Gas combustion chamber: No Tar allowed in drain_comb.";	endifl
+
+
+
+
+# =================================================================================================================
+# ====================================         P Y R O L Y S I S     R E A C T O R         ========================================
+# =================================================================================================================
+

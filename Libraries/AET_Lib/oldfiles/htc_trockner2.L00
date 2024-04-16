@@ -1,0 +1,30 @@
+========================================================================
+||
+||     PSEStat - Static Solver
+||     Version 5.1, Build 1134, Nov 26 2012 17:03:48 
+||
+========================================================================
+
+Loading system ...
+
+System has been loaded successfully.
+System analysis ...
+========================================================================
+System model contains 299 variables
+75 variables set to fixed values
+System to be solved contains 224 variables and 224 equations
+
+%Error: 
+System structurally singular, 1 equations depending
+Variable u_dryer_ogw_001.E_loss can not be calculated
+dryer_orggaswater u_dryer_ogw_001 equation fdp_heating_no is redundant.
+Redundant equation contains the following variables:
+
+
+========================================================================
+Solution
+Start:	Apr 23 2014, 16:20:50,648
+End:	Apr 23 2014, 16:20:50.874
+Time:	0.226000  seconds
+1 errors, 0 warnings
+========================================================================
